@@ -53,18 +53,18 @@ blockchain-testing-portfolio/ ├── README.md ├── requirements.txt ├
 Перейдите в директорию проекта:
 
 sh
-Копировать
+
 cd blockchain-testing-portfolio
 Установите зависимости:
 
 sh
-Копировать
+
 pip install -r requirements.txt
 (Опционально) Для статического анализа:
 Установите Slither (если не установлен):
 
 sh
-Копировать
+
 pip install slither-analyzer
 Если вы используете WSL или виртуальное окружение, убедитесь, что все зависимости установлены в нужном окружении.
 
@@ -73,19 +73,19 @@ pip install slither-analyzer
 Для запуска всех автотестов выполните:
 
 sh
-Копировать
+
 pytest -v
 # Интеграционные тесты
 Чтобы проверить подключение к сети Sepolia через Infura, отредактируйте файл tests/test_integration.py, заменив YOUR_INFURA_API_KEY на ваш ключ, и выполните:
 
 sh
-Копировать
+
 pytest -v
 # Статический анализ
 Для проверки смарт-контракта с помощью Slither выполните:
 
 sh
-Копировать
+
 slither contracts/SimpleStorage.sol
 
 ## Тест-кейсы
