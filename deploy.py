@@ -8,7 +8,7 @@ set_solc_version('0.8.0')
 
 # Загрузка API ключа Infura и приватного ключа из переменных среды
 INFURA_URL = os.environ.get("https://sepolia.infura.io/v3/3bcddb4bb74f41cfa07202d3c77b1c1c")  # например, "https://sepolia.infura.io/v3/YOUR_INFURA_API_KEY"
-PRIVATE_KEY = os.environ.get("3bcddb4bb74f41cfa07202d3c77b1c1c")
+PRIVATE_KEY = os.environ.get("0x406A3e99b5bcD74E5FB8F0aB283A256784Ee0733")
 
 # Пример исходного кода контракта (можно заменить на нужный контракт)
 contract_source_code = '''
