@@ -129,3 +129,4 @@ jobs:
         env:
   INFURA_URL: ${{ secrets.https://developer.metamask.io/key/3bcddb4bb74f41cfa07202d3c77b1c1c/all-endpoints }}
   DEPLOYER_PRIVATE_KEY: ${{ secrets.3bcddb4bb74f41cfa07202d3c77b1c1c }}
+run: python deploy.py
