@@ -1,4 +1,5 @@
 name: Run Python Tests
+testpaths: tests
 
 on:
   push:
