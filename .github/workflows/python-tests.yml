@@ -44,4 +44,3 @@ jobs:
     - name: Run tests
       run: |
         pytest -v
->>>>>>> 91389c6 (Добавлены изменения в requirements.txt и workflow)
