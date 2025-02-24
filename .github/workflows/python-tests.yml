@@ -49,7 +49,7 @@ jobs:
           files: coverage.xml
           flags: unittests
           name: codecov-umbrella
-name: CI/CD Pipeline
+          name: CI/CD Pipeline
 
 on:
   push:
