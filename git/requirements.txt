@@ -1,4 +1,0 @@
-pytest
-web3
-py-solc-x
-eth-tester
