@@ -45,7 +45,8 @@ jobs:
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}   # Укажите токен, если репозиторий приватный. Для публичных репозиториев можно убрать эту строку.
+          # Для публичных репозиториев можно убрать токен, для приватных добавьте:
+          token: ${{ secrets.CODECOV_TOKEN }}
           files: coverage.xml
           flags: unittests
           name: codecov-umbrella
