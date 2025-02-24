@@ -1,8 +1,5 @@
 name: Run Python Tests
 
-- name: List repository files
-  run: ls -la
-
 on:
   push:
     branches: [ main ]
