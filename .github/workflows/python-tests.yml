@@ -1,5 +1,5 @@
 name: Run Python Tests
-testpaths: tests
+
 - name: List repository files
   run: ls -la
 
