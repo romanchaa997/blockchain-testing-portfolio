@@ -2,3 +2,4 @@
 web3
 py-solc-x
 eth-tester
+pytest-cov
