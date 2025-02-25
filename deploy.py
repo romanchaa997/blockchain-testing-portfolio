@@ -1,4 +1,8 @@
 import os
+print("INFURA_URL:", os.environ.get("INFURA_URL"))
+print("DEPLOYER_PRIVATE_KEY:", os.environ.get("DEPLOYER_PRIVATE_KEY"))
+
+import os
 from web3 import Web3
 from solcx import compile_source, install_solc, set_solc_version
 
@@ -7,8 +11,8 @@ install_solc('0.8.0')
 set_solc_version('0.8.0')
 
 # Загрузка API ключа Infura и приватного ключа из переменных среды
-INFURA_URL = os.environ.get("https://sepolia.infura.io/v3/3bcddb4bb74f41cfa07202d3c77b1c1c")  # например, "https://sepolia.infura.io/v3/YOUR_INFURA_API_KEY"
-PRIVATE_KEY = os.environ.get("0x406A3e99b5bcD74E5FB8F0aB283A256784Ee0733")
+INFURA_URL = os.environ.get("INFURA_URL")
+PRIVATE_KEY = os.environ.get("DEPLOYER_PRIVATE_KEY")
 
 # Пример исходного кода контракта (можно заменить на нужный контракт)
 contract_source_code = '''
@@ -54,7 +58,7 @@ def deploy_contract():
     signed_txn = w3.eth.account.sign_transaction(construct_txn, private_key=PRIVATE_KEY)
 
     # Отправляем транзакцию
-    tx_hash = w3.eth.send_raw_transaction(signed_txn.rawTransaction)
+    tx_hash = w3.eth.send_raw_transaction(signed_txn.raw_transaction)
     print("Deploying contract, tx hash:", tx_hash.hex())
 
     # Ждем подтверждения
