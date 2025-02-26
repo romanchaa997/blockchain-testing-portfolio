@@ -51,9 +51,10 @@ jobs:
           name: codecov-umbrella
 
   deploy:
+    if: false
     needs: build
     runs-on: ubuntu-latest
-    if: false   # Деплой-тесты пропущены в CI (так как баланс недостаточен)
+      # Деплой-тесты пропущены в CI (так как баланс недостаточен)
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
