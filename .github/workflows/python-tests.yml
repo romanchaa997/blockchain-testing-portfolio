@@ -26,7 +26,6 @@ jobs:
 
       - name: Run Solhint on AdvancedStorage.sol
         run: solhint contracts/AdvancedStorage.sol
-
 on:
   push:
     branches: [ main ]
