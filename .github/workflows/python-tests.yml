@@ -1,22 +1,31 @@
 name: CI/CD Pipeline
-name: Install Solhint
-run: npm install -g solhint
-- name: Set up Node.js
-uses: actions/setup-node@v3
-with:
-  node-version: '16'
 
-- name: Install Solhint
-run: npm install -g solhint
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
-- name: Check Solhint version
-run: solhint --version
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-- name: Run Solhint on AdvancedStorage.sol
-run: solhint contracts/AdvancedStorage.sol
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
 
-- name: Run Solhint on AdvancedStorage.sol
-run: solhint contracts/AdvancedStorage.sol
+      - name: Install Solhint
+        run: npm install -g solhint
+
+      - name: Check Solhint version
+        run: solhint --version
+
+      - name: Run Solhint on AdvancedStorage.sol
+        run: solhint contracts/AdvancedStorage.sol
 
 on:
   push:
