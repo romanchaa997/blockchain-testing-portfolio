@@ -1,5 +1,5 @@
 name: CI/CD Pipeline
-- name: Install Solhint
+name: Install Solhint
 run: npm install -g solhint
 - name: Run Solhint on AdvancedStorage.sol
 run: solhint contracts/AdvancedStorage.sol
