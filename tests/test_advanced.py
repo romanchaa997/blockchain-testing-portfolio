@@ -1,6 +1,7 @@
 import pytest
 from web3 import Web3
 from solcx import compile_source, install_solc, set_solc_version
+import time
 
 # Устанавливаем компилятор Solidity версии 0.8.0
 install_solc('0.8.0')
