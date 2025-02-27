@@ -1,4 +1,8 @@
 name: CI/CD Pipeline
+- name: Install Solhint
+run: npm install -g solhint
+- name: Run Solhint on AdvancedStorage.sol
+run: solhint contracts/AdvancedStorage.sol
 
 on:
   push:
@@ -28,6 +32,11 @@ jobs:
       - name: Set up Python 3.12
         uses: actions/setup-python@v4
         with:
+          - name: Install Solhint
+          run: npm install -g solhint
+  
+      - name: Run Solhint on AdvancedStorage.sol
+          run: solhint contracts/AdvancedStorage.sol
           python-version: 3.12
 
       - name: List repository files
