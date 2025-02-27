@@ -38,7 +38,6 @@ jobs:
 
       - name: Run Solhint on AdvancedStorage.sol
         run: solhint contracts/AdvancedStorage.sol
-        python-version: 3.12
 
       - name: List repository files
         run: ls -la
