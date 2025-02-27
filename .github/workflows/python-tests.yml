@@ -27,9 +27,6 @@ jobs:
       - name: Run Solhint on AdvancedStorage.sol
         run: solhint contracts/AdvancedStorage.sol
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
