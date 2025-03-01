@@ -22,7 +22,8 @@ jobs:
       - name: Install Foundry
         run: |
           curl -L https://foundry.paradigm.xyz | bash
-          source ~/.bashrc
+          echo 'export PATH="$HOME/.foundry/bin:$PATH"' >> $HOME/.bashrc
+          source $HOME/.bashrc
           foundryup
           forge install
 
@@ -31,5 +32,5 @@ jobs:
 
       - name: Run Foundry tests
         run: |
-          source ~/.bashrc
+          export PATH="$HOME/.foundry/bin:$PATH"
           forge test -vvv
