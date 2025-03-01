@@ -23,8 +23,8 @@ contract ReentrancyTest is Test {
         attackerContract.attack{value: 1 ether}();
         vm.stopPrank();
 
-        assertEq(address(vulnerableContract).balance, 0, "Reentrancy атака успешна");
-    }
+       assertEq(address(vulnerableContract).balance, 0, "Reentrancy attack successful");
+ }
 }
 
 contract ReentrancyAttacker {
