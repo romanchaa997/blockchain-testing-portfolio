@@ -18,13 +18,18 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
+
+      - name: Install Foundry
+        run: |
           curl -L https://foundry.paradigm.xyz | bash
           source ~/.bashrc
           foundryup
+          forge install
 
       - name: Run Web3.py tests
         run: pytest test-cases/
 
       - name: Run Foundry tests
         run: |
-          forge test --root .
+          source ~/.bashrc
+          forge test -vvv
