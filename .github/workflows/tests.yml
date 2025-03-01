@@ -10,6 +10,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Setup Foundry
+        uses: ./.github/workflows/setup-foundry.yml
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -18,14 +21,6 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-
-      - name: Install Foundry
-        run: |
-          curl -L https://foundry.paradigm.xyz | bash
-          echo 'export PATH="$HOME/.foundry/bin:$PATH"' >> $HOME/.bashrc
-          source $HOME/.bashrc
-          foundryup
-          forge install
 
       - name: Run Web3.py tests
         run: pytest test-cases/
