@@ -27,8 +27,6 @@ jobs:
           foundryup || echo "⚠️ Ошибка: Foundryup не найден!"
           forge --version || echo "⚠️ Ошибка: Forge не найден!"
       
-      
-
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
