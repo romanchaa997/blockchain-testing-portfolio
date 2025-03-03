@@ -29,9 +29,14 @@ jobs:
           $HOME/.foundry/bin/foundryup || echo "⚠️ Ошибка: Foundryup не найден!"
           $HOME/.foundry/bin/forge --version || echo "⚠️ Ошибка: Forge не найден!"
       
-      
-      
-      
+        - name: Run Web3.py tests
+            run: |
+        if [ -d "test-cases" ]; then
+        pytest test-cases/
+        else
+        echo "⚠️ Ошибка: Папка test-cases не найдена!"
+        exit 1
+        fi
 
       - name: Set up Python
         uses: actions/setup-python@v4
