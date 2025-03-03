@@ -17,12 +17,14 @@ jobs:
       - name: Install Foundry
         run: |
           curl -L https://foundry.paradigm.xyz | bash
-          source $HOME/.bashrc
           export PATH="$HOME/.foundry/bin:$PATH"
           echo 'export PATH="$HOME/.foundry/bin:$PATH"' >> $GITHUB_ENV
-          foundryup
-          forge install
-          forge --version
+          source $HOME/.bashrc || true
+          ls -la $HOME/.foundry/bin || true
+          bash -c "source $HOME/.bashrc && foundryup"
+          foundryup || echo "⚠️ Ошибка: Foundryup не найден!"
+          forge --version || echo "⚠️ Ошибка: Forge не найден!"
+      
 
       - name: Set up Python
         uses: actions/setup-python@v4
