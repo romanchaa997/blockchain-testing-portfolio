@@ -17,7 +17,7 @@ jobs:
       - name: Install Foundry
         run: |
           curl -L https://foundry.paradigm.xyz | bash
-          mkdir -p $HOME/.foundry/bin  # Создание каталога для Foundry
+          mkdir -p $HOME/.foundry/bin
           export PATH="$HOME/.foundry/bin:$PATH"
           echo 'export PATH="$HOME/.foundry/bin:$PATH"' >> $GITHUB_ENV
           source $HOME/.bashrc || true
@@ -26,7 +26,35 @@ jobs:
           bash -c "source $HOME/.bashrc && foundryup"
           foundryup || echo "⚠️ Ошибка: Foundryup не найден!"
           forge --version || echo "⚠️ Ошибка: Forge не найден!"
+          source $HOME/.bashrc || true  # 🔹 Если файл есть, он будет использован
+          
+          # ✅ Проверяем, есть ли foundryup
+          if [ -f "$HOME/.foundry/bin/foundryup" ]; then
+            echo "✅ Foundryup найден!"
+          else
+            echo "⚠️ Ошибка: Foundryup отсутствует!"
+            exit 1  # Остановим выполнение при отсутствии файла
+          fi
+          
+          foundryup
+          forge --version
       
+      - name: Debug Foundry installation
+        run: |
+            echo "🔍 Проверяем файлы в .foundry/bin/"
+            ls -la $HOME/.foundry/bin || echo "⚠️ Ошибка: Директория .foundry/bin отсутствует!"
+            echo "🔍 Проверяем файлы в .foundry/"
+            ls -la $HOME/.foundry || echo "⚠️ Ошибка: Директория .foundry отсутствует!"
+  
+      - name: Force reinstall Foundry
+        run: |
+          rm -rf $HOME/.foundry
+          curl -L https://foundry.paradigm.xyz | bash
+          export PATH="$HOME/.foundry/bin:$PATH"
+          foundryup
+          forge --version
+
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
