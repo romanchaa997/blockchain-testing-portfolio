@@ -30,9 +30,9 @@ jobs:
           $HOME/.foundry/bin/forge --version || echo "⚠️ Ошибка: Forge не найден!"
       
         - name: Run Web3.py tests
-            run: |
+            run:
         if [ -d "test-cases" ]; then
-        pytest test-cases/
+        pytest ./test-cases/
         else
         echo "⚠️ Ошибка: Папка test-cases не найдена!"
         exit 1
@@ -42,9 +42,16 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: "3.10"
-
+          steps:
+            - name: Checkout repository
+              uses: actions/checkout@v3  # ✅ Убедись, что этот шаг есть!
+      
       - name: Install dependencies
         run: pip install -r requirements.txt
+
+      - name: Debug workspace
+        run: ls -la && pwd
+
 
       - name: Run Web3.py tests
         run: pytest test-cases/
