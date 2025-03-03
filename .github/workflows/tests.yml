@@ -10,8 +10,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup Foundry
-        uses: ./.github/workflows/setup-foundry.yml
+      - name: Install Foundry
+        run: |
+          curl -L https://foundry.paradigm.xyz | bash
+          echo 'export PATH="$HOME/.foundry/bin:$PATH"' >> $GITHUB_ENV
+          export PATH="$HOME/.foundry/bin:$PATH"
+          chmod +x $HOME/.foundry/bin/foundryup  # ✅ Делаем foundryup исполняемым
+          foundryup
+          forge install
+          forge --version
 
       - name: Set up Python
         uses: actions/setup-python@v4
