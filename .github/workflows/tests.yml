@@ -13,6 +13,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
       - name: Install Foundry
         run: |
           curl -L https://foundry.paradigm.xyz | bash
@@ -22,33 +23,29 @@ jobs:
           foundryup
           forge install
           forge --version
-            
-      - name: Run Web3.py tests
-        run:
-            if [ -d "test-cases" ]; then
-            pytest ./test-cases/
-            else
-      echo "⚠️ Ошибка: Папка test-cases не найдена!"
-            exit 1
-            fi
 
       - name: Set up Python
-      uses: actions/setup-python@v4
+        uses: actions/setup-python@v4
         with:
           python-version: "3.10"
-          steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3  # ✅ Убедись, что этот шаг есть!
-      
+
       - name: Install dependencies
         run: pip install -r requirements.txt
 
       - name: Debug workspace
-        run: ls -la && pwd
-
+        run: |
+          echo "🔍 Checking workspace..."
+          ls -la
+          pwd
 
       - name: Run Web3.py tests
-        run: pytest test-cases/
+        run: |
+          if [ -d "test-cases" ]; then
+            pytest test-cases/
+          else
+            echo "⚠️ Ошибка: Папка test-cases не найдена!"
+            exit 1
+          fi
 
       - name: Run Foundry tests
         run: forge test -vvv
