@@ -17,16 +17,16 @@ jobs:
       - name: Install Foundry
         run: |
           curl -L https://foundry.paradigm.xyz | bash
+          mkdir -p $HOME/.foundry/bin
           echo 'export PATH="$HOME/.foundry/bin:$PATH"' >> $GITHUB_ENV
           echo 'export PATH="$HOME/.foundry/bin:$PATH"' >> $HOME/.bashrc
           echo 'export PATH="$HOME/.foundry/bin:$PATH"' >> $HOME/.profile
           export PATH="$HOME/.foundry/bin:$PATH"
-          ls -lah $HOME/.foundry/bin
-          chmod +x $HOME/.foundry/bin/foundryup
-          $HOME/.foundry/bin/foundryup
-          foundryup
+          sleep 2  # Даём время на установку
+          foundryup || echo "⚠️ Ошибка: Foundryup не найден!"
           forge install
           forge --version
+      
       
       
 
