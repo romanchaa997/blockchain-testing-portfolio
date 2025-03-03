@@ -13,38 +13,32 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
       - name: Install Foundry
         run: |
           curl -L https://foundry.paradigm.xyz | bash
-          mkdir -p $HOME/.foundry/bin
+          source $HOME/.bashrc
           export PATH="$HOME/.foundry/bin:$PATH"
           echo 'export PATH="$HOME/.foundry/bin:$PATH"' >> $GITHUB_ENV
-          echo 'export PATH="$HOME/.foundry/bin:$PATH"' >> $HOME/.bashrc
-          echo 'export PATH="$HOME/.foundry/bin:$PATH"' >> $HOME/.profile
-          source $HOME/.bashrc
-          source $HOME/.profile
-          ls -la $HOME/.foundry/bin  # Проверяем, установлены ли бинарники
-          sleep 2  # Даём время системе на обновление
-          $HOME/.foundry/bin/foundryup || echo "⚠️ Ошибка: Foundryup не найден!"
-          $HOME/.foundry/bin/forge --version || echo "⚠️ Ошибка: Forge не найден!"
-      
-        - name: Run Web3.py tests
-            run:
-        if [ -d "test-cases" ]; then
-        pytest ./test-cases/
-        else
-        echo "⚠️ Ошибка: Папка test-cases не найдена!"
-        exit 1
-        fi
+          foundryup
+          forge install
+          forge --version
+            
+      - name: Run Web3.py tests
+        run:
+            if [ -d "test-cases" ]; then
+            pytest ./test-cases/
+            else
+      echo "⚠️ Ошибка: Папка test-cases не найдена!"
+            exit 1
+            fi
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+      uses: actions/setup-python@v4
         with:
           python-version: "3.10"
           steps:
-            - name: Checkout repository
-              uses: actions/checkout@v3  # ✅ Убедись, что этот шаг есть!
+      - name: Checkout repository
+        uses: actions/checkout@v3  # ✅ Убедись, что этот шаг есть!
       
       - name: Install dependencies
         run: pip install -r requirements.txt
