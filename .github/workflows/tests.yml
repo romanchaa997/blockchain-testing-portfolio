@@ -15,15 +15,18 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install Foundry
-        run: |
-          curl -L https://foundry.paradigm.xyz | bash
-          export PATH="$HOME/.foundry/bin:$PATH"
-          echo 'export PATH="$HOME/.foundry/bin:$PATH"' >> $GITHUB_ENV
-          source $HOME/.bashrc || true
-          ls -la $HOME/.foundry/bin || true
-          bash -c "source $HOME/.bashrc && foundryup"
-          foundryup || echo "⚠️ Ошибка: Foundryup не найден!"
-          forge --version || echo "⚠️ Ошибка: Forge не найден!"
+  run: |
+    curl -L https://foundry.paradigm.xyz | bash
+    mkdir -p $HOME/.foundry/bin  # Создание каталога для Foundry
+    export PATH="$HOME/.foundry/bin:$PATH"
+    echo 'export PATH="$HOME/.foundry/bin:$PATH"' >> $GITHUB_ENV
+    source $HOME/.bashrc || true
+    ls -la $HOME/.foundry || echo "⚠️ Ошибка: Папка .foundry отсутствует!"
+    ls -la $HOME/.foundry/bin || echo "⚠️ Ошибка: Папка .foundry/bin отсутствует!"
+    bash -c "source $HOME/.bashrc && foundryup"
+    foundryup || echo "⚠️ Ошибка: Foundryup не найден!"
+    forge --version || echo "⚠️ Ошибка: Forge не найден!"
+
       
 
       - name: Set up Python
