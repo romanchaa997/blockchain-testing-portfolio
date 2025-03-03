@@ -18,10 +18,13 @@ jobs:
         run: |
           curl -L https://foundry.paradigm.xyz | bash
           echo 'export PATH="$HOME/.foundry/bin:$PATH"' >> $GITHUB_ENV
-          export PATH="$HOME/.foundry/bin:$PATH"
+          echo 'export PATH="$HOME/.foundry/bin:$PATH"' >> ~/.bashrc
+          echo 'export PATH="$HOME/.foundry/bin:$PATH"' >> ~/.profile
+          source ~/.profile
           foundryup
           forge install
           forge --version
+      
 
       - name: Set up Python
         uses: actions/setup-python@v4
