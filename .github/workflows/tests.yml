@@ -18,14 +18,17 @@ jobs:
         run: |
           curl -L https://foundry.paradigm.xyz | bash
           mkdir -p $HOME/.foundry/bin
+          export PATH="$HOME/.foundry/bin:$PATH"
           echo 'export PATH="$HOME/.foundry/bin:$PATH"' >> $GITHUB_ENV
           echo 'export PATH="$HOME/.foundry/bin:$PATH"' >> $HOME/.bashrc
           echo 'export PATH="$HOME/.foundry/bin:$PATH"' >> $HOME/.profile
-          export PATH="$HOME/.foundry/bin:$PATH"
-          sleep 2  # Даём время на установку
-          foundryup || echo "⚠️ Ошибка: Foundryup не найден!"
-          forge install
-          forge --version
+          source $HOME/.bashrc
+          source $HOME/.profile
+          ls -la $HOME/.foundry/bin  # Проверяем, установлены ли бинарники
+          sleep 2  # Даём время системе на обновление
+          $HOME/.foundry/bin/foundryup || echo "⚠️ Ошибка: Foundryup не найден!"
+          $HOME/.foundry/bin/forge --version || echo "⚠️ Ошибка: Forge не найден!"
+      
       
       
       
