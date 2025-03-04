@@ -17,66 +17,27 @@ jobs:
       - name: Install Foundry
         run: |
           curl -L https://foundry.paradigm.xyz | bash
-          mkdir -p $HOME/.foundry/bin
           export PATH="$HOME/.foundry/bin:$PATH"
           echo 'export PATH="$HOME/.foundry/bin:$PATH"' >> $GITHUB_ENV
-          source $HOME/.bashrc || true
-          ls -la $HOME/.foundry || echo "⚠️ Ошибка: Папка .foundry отсутствует!"
+          source "$HOME/.bashrc" || true
+          foundryup
           ls -la $HOME/.foundry/bin || echo "⚠️ Ошибка: Папка .foundry/bin отсутствует!"
-          bash -c "source $HOME/.bashrc && foundryup"
-          foundryup || echo "⚠️ Ошибка: Foundryup не найден!"
           forge --version || echo "⚠️ Ошибка: Forge не найден!"
-          source $HOME/.bashrc || true  # 🔹 Если файл есть, он будет использован
-          
-          # ✅ Проверяем, есть ли foundryup
-          if [ -f "$HOME/.foundry/bin/foundryup" ]; then
-            echo "✅ Foundryup найден!"
-          else
-            echo "⚠️ Ошибка: Foundryup отсутствует!"
-            exit 1  # Остановим выполнение при отсутствии файла
-          fi
-          
-          foundryup
-          forge --version
       
-      - name: Debug Foundry installation
+
+      - name: Debug Foundry Install
         run: |
-            echo "🔍 Проверяем файлы в .foundry/bin/"
-            ls -la $HOME/.foundry/bin || echo "⚠️ Ошибка: Директория .foundry/bin отсутствует!"
-            echo "🔍 Проверяем файлы в .foundry/"
-            ls -la $HOME/.foundry || echo "⚠️ Ошибка: Директория .foundry отсутствует!"
-  
-      - name: Force reinstall Foundry
+          echo "🔍 Checking Foundry installation..."
+          ls -la $HOME/.foundry
+          ls -la $HOME/.foundry/bin
+          echo "PATH: $PATH"
+          which foundryup || echo "⚠️ Foundryup не найден!"
+          which forge || echo "⚠️ Forge не найден!"
+
+      - name: Run Foundry with full path
         run: |
-          rm -rf $HOME/.foundry
-          curl -L https://foundry.paradigm.xyz | bash
-          export PATH="$HOME/.foundry/bin:$PATH"
-          foundryup
-          forge --version
-
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.10"
-
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-
-      - name: Debug workspace
-        run: |
-          echo "🔍 Checking workspace..."
-          ls -la
-          pwd
-
-      - name: Run Web3.py tests
-        run: |
-          if [ -d "test-cases" ]; then
-            pytest test-cases/
-          else
-            echo "⚠️ Ошибка: Папка test-cases не найдена!"
-            exit 1
-          fi
+          $HOME/.foundry/bin/foundryup
+          $HOME/.foundry/bin/forge --version
 
       - name: Run Foundry tests
         run: forge test -vvv
