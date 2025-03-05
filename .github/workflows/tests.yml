@@ -19,25 +19,17 @@ jobs:
           curl -L https://foundry.paradigm.xyz | bash
           export PATH="$HOME/.foundry/bin:$PATH"
           echo 'export PATH="$HOME/.foundry/bin:$PATH"' >> $GITHUB_ENV
-          source "$HOME/.bashrc" || true
+          source $HOME/.bashrc || true
           foundryup
-          ls -la $HOME/.foundry/bin || echo "⚠️ Ошибка: Папка .foundry/bin отсутствует!"
           forge --version || echo "⚠️ Ошибка: Forge не найден!"
-      
 
-      - name: Debug Foundry Install
+      - name: Debug workspace
         run: |
-          echo "🔍 Checking Foundry installation..."
-          ls -la $HOME/.foundry
-          ls -la $HOME/.foundry/bin
-          echo "PATH: $PATH"
-          which foundryup || echo "⚠️ Foundryup не найден!"
-          which forge || echo "⚠️ Forge не найден!"
-
-      - name: Run Foundry with full path
-        run: |
-          $HOME/.foundry/bin/foundryup
-          $HOME/.foundry/bin/forge --version
+          echo "🔍 Проверяем файлы..."
+          ls -la
+          echo "🔍 Проверяем установку Foundry..."
+          ls -la $HOME/.foundry || echo "⚠️ Ошибка: Папка .foundry отсутствует!"
+          ls -la $HOME/.foundry/bin || echo "⚠️ Ошибка: Папка .foundry/bin отсутствует!"
 
       - name: Run Foundry tests
         run: forge test -vvv
