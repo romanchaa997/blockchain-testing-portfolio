@@ -4,12 +4,12 @@ pragma solidity ^0.8.0;
 contract SimpleStorage {
     uint256 private storedData;
 
-    // Устанавливаем значение
+    // Set the value
     function set(uint256 _data) public {
         storedData = _data;
     }
 
-    // Получаем значение
+    // We get the value
     function get() public view returns (uint256) {
         return storedData;
     }

@@ -6,14 +6,14 @@ contract AdvancedStorage {
 
     event DataSet(address indexed setter, uint256 value);
 
-    // Функция установки значения с ограничением
+    // Set value function with limit
     function set(uint256 _data) public {
         require(_data <= 1000, "Value too high");
         storedData = _data;
         emit DataSet(msg.sender, _data);
     }
 
-    // Функция получения значения
+    // Function to get the value
     function get() public view returns (uint256) {
         return storedData;
     }

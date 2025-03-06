@@ -4,11 +4,11 @@ from solcx import compile_source, install_solc, set_solc_version
 import random
 import time
 
-# Устанавливаем и задаем компилятор Solidity версии 0.8.0
+# Install and set up the Solidity compiler version 0.8.0
 install_solc('0.8.0')
 set_solc_version('0.8.0')
 
-# Исходный код контракта SimpleStorage.sol
+# Contract source code SimpleStorage.sol
 contract_source = """
 pragma solidity ^0.8.0;
 
@@ -27,14 +27,14 @@ contract SimpleStorage {
 
 @pytest.fixture
 def w3():
-    """Создаем локальный Web3 провайдер, подключенный к Ganache"""
+    """Create a local Web3 provider connected to Ganache"""
     w3 = Web3(Web3.HTTPProvider("http://127.0.0.1:8545"))
     w3.eth.default_account = w3.eth.accounts[0]
     return w3
 
 @pytest.fixture
 def contract(w3):
-    """Компилируем и разворачиваем контракт"""
+    """Compile and deploy the contract"""
     compiled_sol = compile_source(contract_source, solc_version="0.8.0")
     contract_interface = compiled_sol['<stdin>:SimpleStorage']
 
@@ -50,7 +50,7 @@ def contract(w3):
     )
 
 def test_deployment(contract):
-    # Проверяем, что адрес контракта получен
+    # Check that the contract address has been received
     assert contract.address is not None
 
 def test_set_and_get(contract, w3):
@@ -71,5 +71,5 @@ def test_load_set(contract, w3):
         tx_hash = contract.functions.set(random.randint(1, 100)).transact({'from': w3.eth.default_account, 'gas': 3000000})
         w3.eth.wait_for_transaction_receipt(tx_hash)
     elapsed = time.time() - start
-    print(f"{num_transactions} транзакций выполнены за {elapsed:.2f} секунд")
+    print(f"{num_transactions} transactions completed in {elapsed:.2f} секунд")
     assert elapsed < 10

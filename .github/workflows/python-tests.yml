@@ -65,7 +65,7 @@ jobs:
     if: false
     needs: build
     runs-on: ubuntu-latest
-      # Деплой-тесты пропущены в CI (так как баланс недостаточен)
+      # Deployment tests are skipped in CI (due to insufficient balance)
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3

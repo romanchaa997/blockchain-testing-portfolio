@@ -1,69 +1,68 @@
-Deployment Test для SimpleStorage
-Цель: Убедиться, что контракт SimpleStorage успешно разворачивается и получает корректный адрес.
-Шаги:
+Goal: Verify that the SimpleStorage contract is deployed successfully and receives a valid address.
+Steps:
 
-Развернуть контракт в локальной сети (Ganache).
-Проверить, что метод get() возвращает начальное значение (например, 0).
-Ожидаемый результат: Контракт имеет действительный адрес, а начальное значение равно 0.
-Функциональный тест для set() и get() в SimpleStorage
-Цель: Проверить, что функция set() корректно обновляет значение, а get() возвращает обновлённое значение.
-Шаги:
+Deploy the contract to a local network (Ganache).
+Verify that the get() method returns an initial value (e.g. 0).
+Expected result: The contract has a valid address and the initial value is 0.
+Functional test for set() and get() in SimpleStorage
+Goal: Verify that the set() function correctly updates the value, and get() returns the updated value.
+Steps:
 
-Вызвать функцию set(42).
-Вызвать функцию get().
-Ожидаемый результат: get() возвращает значение 42.
-Негативный тест для SimpleStorageV2 (ограничение значения)
-Цель: Проверить, что функция set() в модифицированном контракте откатывает транзакцию при передаче недопустимого значения (например, > 1000).
-Шаги:
+Call the set(42) function.
+Call the get() function.
+Expected result: get() returns the value 42.
+Negative test for SimpleStorageV2 (value constraint)
+Goal: Verify that the set() function in the modified contract rolls back the transaction when an invalid value is passed (e.g. > 1000).
+Steps:
 
-Вызвать set(2000) с чужого аккаунта или в контракте, где ограничение установлено.
-Ожидаемый результат: Транзакция откатывается с сообщением "Value too high".
-Тест граничного значения для SimpleStorage
-Цель: Проверить, что контракт корректно обрабатывает максимально возможное значение для типа uint256.
-Шаги:
+Call set(2000) from another account or in the contract where the limit is set.
+Expected result: The transaction is rolled back with the message "Value too high".
+SimpleStorage boundary value test
+Goal: Check that the contract correctly handles the maximum possible value for the uint256 type.
+Steps:
 
-Вызвать set(2**256 - 1).
-Проверить, что get() возвращает это значение.
-Ожидаемый результат: Значение успешно установлено и возвращено.
-Тест на эмиссию события в SimpleStorage
-Цель: Проверить, что при вызове set() генерируется событие с корректными параметрами.
-Шаги:
+Call set(2**256 - 1).
+Verify that get() returns this value.
+Expected result: The value is successfully set and returned.
+SimpleStorage event emission test
+Goal: Check that calling set() generates an event with the correct parameters.
+Steps:
 
-Вызвать set(77) и получить транзакционный receipt.
-Проанализировать логи на наличие события (например, DataSet).
-Ожидаемый результат: Выдается событие с указанным значением и адресом отправителя.
-Deployment Test для OwnerBasedStorage
-Цель: Проверить, что контракт OwnerBasedStorage правильно устанавливает владельца при развертывании.
-Шаги:
+Call set(77) and get a transaction receipt.
+Parse the logs for the event (e.g. DataSet).
+Expected result: An event with the specified value and sender address is emitted.
+Deployment Test for OwnerBasedStorage
+Goal: Verify that the OwnerBasedStorage contract correctly sets the owner when deployed.
+Steps:
 
-Развернуть контракт, используя аккаунт accounts[0].
-Проверить, что функция owner() возвращает accounts[0].
-Ожидаемый результат: Владельцем является аккаунт, использованный для развертывания.
-Негативный тест для функции set() в OwnerBasedStorage
-Цель: Убедиться, что функция set() откатывает транзакцию, если вызов происходит от не владельца.
-Шаги:
+Deploy the contract using the accounts[0] account.
+Verify that the owner() function returns accounts[0].
+Expected Result: The owner is the account used for the deployment.
+Negative Test for the set() Function in OwnerBasedStorage
+Goal: Verify that the set() function rolls back the transaction if called from a non-owner.
+Steps:
 
-Попытаться вызвать set(999) с аккаунта accounts[1].
-Ожидаемый результат: Транзакция откатывается с ошибкой "Only owner can set the data".
-Тест независимого хранения в UserStorage
-Цель: Проверить, что разные пользователи могут независимо сохранять свои значения.
-Шаги:
+Attempt to call set(999) from the accounts[1] account.
+Expected Result: The transaction rolls back with the error "Only owner can set the data".
+Separate Storage Test in UserStorage
+Goal: Verify that different users can independently persist their values.
+Steps:
 
-Пользователь accounts[0] устанавливает значение 100.
-Пользователь accounts[1] устанавливает значение 200.
-С помощью функции getFor() проверить, что для accounts[0] возвращается 100, а для accounts[1] — 200.
-Ожидаемый результат: Значения хранятся независимо для каждого пользователя.
-Интеграционный тест подключения через Infura (Sepolia)
-Цель: Проверить, что приложение может подключиться к публичной тестовой сети через Infura.
-Шаги:
+User accounts[0] sets the value to 100.
+User accounts[1] sets the value to 200.
+Use getFor() to check that accounts[0] returns 100 and accounts[1] returns 200.
+Expected result: The values ​​are stored independently for each user.
+Integration test for connection via Infura (Sepolia)
+Goal: Check that the application can connect to the public test network via Infura.
+Steps:
 
-Использовать URL Infura для сети Sepolia.
-Проверить, что вызов w3.is_connected() возвращает True и можно получить текущий номер блока.
-Ожидаемый результат: Успешное подключение, номер блока > 0.
-Нагрузочное тестирование
-Цель: Оценить производительность контракта при выполнении большого количества транзакций.
-Шаги:
+Use the Infura URL for the Sepolia network.
+Verify that the w3.is_connected() call returns True and the current block number can be retrieved.
+Expected result: Successful connection, block number > 0.
+Load testing
+Goal: Evaluate the performance of the contract when executing a large number of transactions.
+Steps:
 
-Выполнить 1000 вызовов функции set() (или аналогичной) в цикле.
-Замерить общее время выполнения и средний расход газа.
-Ожидаемый результат: Все транзакции выполняются в разумное время, без ошибок.
+Run 1000 calls to set() (or similar) in a loop.
+Measure the total execution time and average gas consumption.
+Expected Result: All transactions are completed in a reasonable time, without errors.

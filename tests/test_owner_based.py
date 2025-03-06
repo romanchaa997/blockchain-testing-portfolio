@@ -2,11 +2,11 @@ import pytest
 from web3 import Web3
 from solcx import compile_source, install_solc, set_solc_version
 
-# Устанавливаем компилятор Solidity 0.8.0
+# Installing Solidity Compiler 0.8.0
 install_solc('0.8.0')
 set_solc_version('0.8.0')
 
-# Исходный код контракта OwnerBasedStorage.sol
+# Contract source code OwnerBasedStorage.sol
 contract_source_owner = """
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
@@ -35,14 +35,14 @@ contract OwnerBasedStorage {
 
 @pytest.fixture
 def w3():
-    """Создаем локальный Web3 провайдер, подключенный к Ganache"""
+    """Create a local Web3 provider connected to Ganache"""
     w3 = Web3(Web3.HTTPProvider("http://127.0.0.1:8545"))
     w3.eth.default_account = w3.eth.accounts[0]
     return w3
 
 @pytest.fixture
 def owner_based_contract(w3):
-    """Компилируем и разворачиваем контракт OwnerBasedStorage"""
+    """Compile and deploy the contract OwnerBasedStorage"""
     compiled_sol = compile_source(contract_source_owner, solc_version="0.8.0")
     contract_interface = compiled_sol['<stdin>:OwnerBasedStorage']
 
@@ -58,12 +58,12 @@ def owner_based_contract(w3):
     )
 
 def test_deployment(owner_based_contract, w3):
-    # Проверяем, что владелец контракта совпадает с w3.eth.accounts[0]
+    # We check that the owner of the contract matches w3.eth.accounts[0]
     contract_owner = owner_based_contract.functions.owner().call()
     assert contract_owner == w3.eth.accounts[0]
 
 def test_set_by_owner(owner_based_contract, w3):
-    # Тест: владелец может установить значение
+    # Test: Owner can set value
     tx_hash = owner_based_contract.functions.set(123).transact({
         'from': w3.eth.default_account,
         'gas': 3000000
@@ -73,7 +73,7 @@ def test_set_by_owner(owner_based_contract, w3):
     assert value == 123
 
 def test_set_by_non_owner(owner_based_contract, w3):
-    # Тест: если вызов происходит от не владельца, транзакция откатывается
+    # Test: If call is not from owner, transaction is rolled back
     with pytest.raises(Exception) as excinfo:
         tx_hash = owner_based_contract.functions.set(999).transact({
             'from': w3.eth.accounts[1],
@@ -83,7 +83,7 @@ def test_set_by_non_owner(owner_based_contract, w3):
     assert "Only owner can set the data" in str(excinfo.value)
 
 def test_event_emission(owner_based_contract, w3):
-    # Тест: при успешном вызове функции set() должно сгенерироваться событие DataSet
+    # Test: When the set() function is called successfully, an event should be generated DataSet
     tx_hash = owner_based_contract.functions.set(777).transact({
         'from': w3.eth.default_account,
         'gas': 3000000

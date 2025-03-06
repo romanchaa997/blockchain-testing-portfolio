@@ -2,24 +2,24 @@
 pragma solidity ^0.8.0;
 
 contract UserStorage {
-    // Хранит значение для каждого пользователя
+    // Stores a value for each user
     mapping(address => uint256) private data;
 
-    // Событие, генерируемое при обновлении значения
+    // Event generated when a value is updated
     event DataUpdated(address indexed user, uint256 newValue);
 
-    // Функция для установки значения текущим пользователем
+    // Function to set the value by the current user
     function set(uint256 _data) public {
         data[msg.sender] = _data;
         emit DataUpdated(msg.sender, _data);
     }
 
-    // Функция для получения значения, установленного текущим пользователем
+    // Function to get the value set by the current user
     function get() public view returns (uint256) {
         return data[msg.sender];
     }
 
-    // Функция для получения значения для заданного адреса
+    // Function to get the value for a given address
     function getFor(address _user) public view returns (uint256) {
         return data[_user];
     }

@@ -1,40 +1,49 @@
 Deployment Test:
 
- Контракт развёрнут?
- Контракт имеет действительный адрес?
- Начальное значение равно 0?
- Functional Test (set/get):
+Is the contract deployed?
+Does the contract have a valid address?
+Is the initial value 0?
 
- Функция set() корректно обновляет значение?
- Функция get() возвращает ожидаемое значение?
- Негативное тестирование:
+Functional Test (set/get):
 
- Транзакция откатывается при недопустимом значении?
- Сообщение об ошибке соответствует ожиданиям?
- Граничное значение:
+Does the set() function update the value correctly?
+Does the get() function return the expected value?
 
- Максимальное значение корректно устанавливается и возвращается?
- События:
+Negative Testing:
 
- Генерируется ли событие при вызове set()?
- Аргументы события соответствуют ожидаемым?
- Owner-Based Access Control:
+Is the transaction rolled back on invalid value?
+Is the error message as expected?
 
- Контракт OwnerBasedStorage корректно устанавливает владельца?
- Только владелец может вызвать функцию set()?
- Независимое хранение (UserStorage):
+Boundary Value:
 
- Разные пользователи могут устанавливать разные значения?
- Функция getFor() возвращает корректные значения для каждого аккаунта?
- Интеграция с Infura:
+Is the maximum value set and returned correctly?
 
- Подключение к сети через Infura работает?
- Получается корректный номер блока?
- Нагрузочное тестирование:
+Events:
 
- Выполняется заданное количество транзакций без сбоев?
- Замеряется время выполнения и расход газа?
- Отчетность и покрытие:
+Is an event generated when set() is called?
+Are the event arguments as expected?
 
- Генерируется ли отчёт покрытия тестами?
- Отчёт успешно загружается в Codecov?
+Owner-Based Access Control:
+
+Does the OwnerBasedStorage contract set the owner correctly?
+Only the owner can call the set() function?
+
+Independent storage (UserStorage):
+
+Can different users set different values?
+Does getFor() return the correct values ​​for each account?
+
+Infura Integration:
+
+Is the network connection via Infura working?
+Is the block number being returned correct?
+
+Load Testing:
+
+Is the specified number of transactions being executed without failure?
+Is execution time and gas consumption being measured?
+
+Reporting and Coverage:
+
+Is a test coverage report being generated?
+Does the report upload successfully to Codecov?

@@ -20,10 +20,10 @@ contract FrontRunningTest is Test {
         dex.swap{value: 1 ether}(1 ether);
 
         vm.prank(attacker);
-        vm.txGasPrice(2 gwei); // Атакующий повышает газ
+        vm.txGasPrice(2 gwei); // The attacker increases the gas
         dex.swap{value: 1 ether}(1 ether);
 
-        // ✅ Просто фиксируем факт атаки, без проверки msg.sender
+        // ✅ simply record the fact of the attack, without verification msg.sender
         emit log("Front-running attack executed successfully");
     }
 }

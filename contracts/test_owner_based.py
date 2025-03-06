@@ -2,11 +2,11 @@ import pytest
 from web3 import Web3
 from solcx import compile_source, install_solc, set_solc_version
 
-# Устанавливаем компилятор Solidity 0.8.0 (или другую нужную версию)
+# Install Solidity compiler 0.8.0 (or another required version)
 install_solc('0.8.0')
 set_solc_version('0.8.0')
 
-# Исходный код контракта
+# Source code of the contract
 contract_source_owner = """
 pragma solidity ^0.8.0;
 
@@ -34,14 +34,14 @@ contract OwnerBasedStorage {
 
 @pytest.fixture
 def w3():
-    """Создаем локальный Web3 провайдер, подключенный к Ganache"""
+    """Create a local Web3 provider connected to Ganache"""
     w3 = Web3(Web3.HTTPProvider("http://127.0.0.1:8545"))
-    w3.eth.default_account = w3.eth.accounts[0]  # Аккаунт 0 будет владельцем
+    w3.eth.default_account = w3.eth.accounts[0]  # Account 0 will be the owner
     return w3
 
 @pytest.fixture
 def owner_based_contract(w3):
-    """Компилируем и разворачиваем контракт OwnerBasedStorage"""
+    """Compile and deploy the OwnerBasedStorage contract"""
     compiled_sol = compile_source(contract_source_owner, solc_version="0.8.0")
     contract_interface = compiled_sol['<stdin>:OwnerBasedStorage']
 
@@ -57,42 +57,42 @@ def owner_based_contract(w3):
     )
 
 def test_deployment(owner_based_contract, w3):
-    # Проверяем, что владелец контракта — это accounts[0]
+    # Verify that the contract owner is accounts[0]
     contract_owner = owner_based_contract.functions.owner().call()
     assert contract_owner == w3.eth.accounts[0]
 
 def test_set_by_owner(owner_based_contract, w3):
-    # Устанавливаем значение 123 от имени владельца (accounts[0])
+    # Set value to 123 from the owner's account (accounts[0])
     tx_hash = owner_based_contract.functions.set(123).transact({
         'from': w3.eth.accounts[0],
         'gas': 3000000
     })
     w3.eth.wait_for_transaction_receipt(tx_hash)
 
-    # Проверяем, что get() возвращает 123
+    # Verify that get() returns 123
     value = owner_based_contract.functions.get().call()
     assert value == 123
 
 def test_set_by_non_owner(owner_based_contract, w3):
-    # Пытаемся установить значение 999 с чужого аккаунта (accounts[1])
+    # Attempt to set value 999 from a different account (accounts[1])
     with pytest.raises(Exception) as excinfo:
         tx_hash = owner_based_contract.functions.set(999).transact({
             'from': w3.eth.accounts[1],
             'gas': 3000000
         })
         w3.eth.wait_for_transaction_receipt(tx_hash)
-    # Проверяем, что revert связан с "Only owner can set the data"
+    # Verify that revert is related to "Only owner can set the data"
     assert "Only owner can set the data" in str(excinfo.value)
 
 def test_event_emission(owner_based_contract, w3):
-    # Отправляем транзакцию от владельца
+    # Send a transaction from the owner
     tx_hash = owner_based_contract.functions.set(777).transact({
         'from': w3.eth.accounts[0],
         'gas': 3000000
     })
     receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
 
-    # Проверяем, что событие DataSet было сгенерировано
+    # Verify that the DataSet event was emitted
     logs = owner_based_contract.events.DataSet().process_receipt(receipt)
     assert len(logs) == 1
     event_args = logs[0]['args']

@@ -4,11 +4,11 @@ import pytest
 
 @pytest.fixture(scope="session")
 def slither_report(tmp_path_factory):
-    # Определяем путь для временного файла отчёта
+    # Define the path for the temporary report file
     temp_dir = tmp_path_factory.mktemp("slither")
     report_path = temp_dir / "slither_report.json"
 
-    # Запускаем slither через Python-модуль, используя shell=True
+    # We run slither via a Python module using shell=True
     result = subprocess.run(
         "python -m slither_analyzer contracts/AdvancedStorage.sol --json " + str(report_path),
         capture_output=True,
@@ -24,10 +24,10 @@ def slither_report(tmp_path_factory):
 
 def test_slither_no_critical_vulnerabilities(slither_report):
     """
-    Проверяем, что Slither не обнаружил критических уязвимостей.
+   We check that Slither did not detect any critical vulnerabilities.
     """
     vulnerabilities = slither_report.get("results", [])
-    # Фильтруем уязвимости с уровнем воздействия 'high' или 'critical'
+    # Filter vulnerabilities with impact level 'high' or 'critical'
     critical_vulns = [
         vuln for vuln in vulnerabilities
         if vuln.get("impact", "").lower() in ["high", "critical"]

@@ -24,7 +24,7 @@ contract ReentrancyTest is Test {
     }
 }
 
-// Атакующий контракт
+// Attack contract
 contract ReentrancyAttacker {
     ReentrancyVuln target;
 
