@@ -14,6 +14,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+        uses: ./.github/workflows/setup-foundry.yml
+        
       - name: Install Foundry
         run: |
           echo "🔽 upload Foundry..."
@@ -30,13 +32,21 @@ jobs:
           foundryup || echo "⚠️ Error: Foundryup don't found!"
           forge --version || echo "⚠️ Error: Forge absent!"
 
+      - name: Ensure Foundry is in PATH
+        run: |
+          export PATH="$HOME/.foundry/bin:$PATH"
+          echo 'export PATH="$HOME/.foundry/bin:$PATH"' >> $GITHUB_ENV
+          forge --version || echo "⚠️ Ошибка: Forge не найден!"
+
+
       - name: Debug workspace
         run: |
-          echo "🔍 checking directory .foundry..."
-          ls -la $HOME/.foundry || echo "⚠️  .foundry absent!"
-          echo "🔍 Проверяем директорию bin..."
-          ls -la $HOME/.foundry/bin || echo "⚠️ П .foundry/bin absent!"
-          echo "🔍 Present PATH: $PATH"
+          echo "🔍 Checking workspace..."
+          ls -la
+          pwd
+          echo "🔍 Checking Foundry installation..."
+          ls -la $HOME/.foundry/bin || echo "⚠️ Ошибка: Папка .foundry/bin отсутствует!"
+        
 
       - name: Run Foundry tests
         run: forge test -vvv
