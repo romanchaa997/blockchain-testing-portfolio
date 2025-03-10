@@ -80,15 +80,17 @@ def test_set_by_owner(owner_based_contract, w3):
     value = owner_based_contract.functions.get().call()
     assert value == 123
 
+from web3.exceptions import ContractLogicError
+
 def test_set_by_non_owner(owner_based_contract, w3):
     # Attempt to set value 999 from a different account (accounts[1])
-    with pytest.raises(Exception) as excinfo:
+    with pytest.raises(ContractLogicError) as excinfo:
         tx_hash = owner_based_contract.functions.set(999).transact({
             'from': w3.eth.accounts[1],
             'gas': 3000000
         })
         w3.eth.wait_for_transaction_receipt(tx_hash)
-    # Verify that revert is related to "Only owner can set the data"
+    # Перевіряємо повідомлення про помилку
     assert "Only owner can set the data" in str(excinfo.value)
 
 def test_event_emission(owner_based_contract, w3):
