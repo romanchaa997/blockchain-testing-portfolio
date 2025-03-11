@@ -1,26 +1,24 @@
-// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
 contract AdvancedStorage {
-    uint256[] private data;
+    address public owner;
+    uint[] private data;
 
-    function add(uint256 _value) public {
-        data.push(_value);
+    constructor() {
+        owner = msg.sender;
     }
 
-    function remove(uint256 index) public {
-        require(index < data.length, "Index out of bounds");
-        // Видаляємо значення, замінюючи його останнім елементом
-        data[index] = data[data.length - 1];
-        data.pop();
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Only owner can call this function");
+        _;
     }
 
-    function get(uint256 index) public view returns (uint256) {
-        require(index < data.length, "Index out of bounds");
+    function add(uint _data) public onlyOwner {
+        data.push(_data);
+    }
+
+    function get(uint index) public view returns (uint) {
+        require(index < data.length, "Invalid index");
         return data[index];
-    }
-
-    function getAll() public view returns (uint256[] memory) {
-        return data;
     }
 }

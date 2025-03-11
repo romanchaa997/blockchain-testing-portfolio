@@ -1,16 +1,26 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.28;
 
 contract SimpleStorage {
-    uint256 private storedData;
+    address public owner;
+    uint private data;
 
-    // Set the value
-    function set(uint256 _data) public {
+    constructor() {
+        owner = msg.sender;
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Only owner can call this function");
+        _;
+    }
+
+    function set(uint _data) public onlyOwner {
         storedData = _data;
     }
 
-    // We get the value
-    function get() public view returns (uint256) {
+    function get() public view returns (uint) {
         return storedData;
     }
+
+    uint private storedData;
 }

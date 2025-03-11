@@ -5,12 +5,15 @@ contract OwnerBasedStorage {
     address public owner;
     uint256 private storedData;
 
-    event DataSet(address indexed setter, uint256 value);
-
     constructor() {
         owner = msg.sender;
     }
 
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Only owner allowed");
+        _;
+    }
+    
     function set(uint256 _data) public {
         // 🔥 ВАЖЛИВО: Впевнимося, що ця перевірка є у коді!
         require(msg.sender == owner, "Only owner can set the data");

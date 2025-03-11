@@ -1,23 +1,23 @@
-// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
 import "forge-std/Test.sol";
 import "../contracts/UserStorage.sol";
 
 contract TestUserStorage is Test {
-    UserStorage public userStorage;
+    UserStorage userStorage;
 
     function setUp() public {
         userStorage = new UserStorage();
     }
 
-    function testSelfSetAndGet() public {
-        userStorage.set(123);
-        assertEq(userStorage.get(), 123, "Stored value should be 123");
+    function testSetAndGet() public {
+        userStorage.set(777);
+        assertEq(userStorage.get(address(this)), 777);
     }
 
-    function testFailUnauthorizedGet() public {
-        vm.prank(address(0x456));
-        userStorage.get(); // Should fail
+    function testUnauthorizedGet() public {
+        vm.expectRevert("Unauthorized access");
+        vm.prank(address(0xBEEF));
+        userStorage.get(address(this));
     }
 }
