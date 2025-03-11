@@ -36,7 +36,7 @@ jobs:
         run: |
           export PATH="$HOME/.foundry/bin:$PATH"
           echo 'export PATH="$HOME/.foundry/bin:$PATH"' >> $GITHUB_ENV
-          forge --version || echo "⚠️ Ошибка: Forge не найден!"
+          іforge --version || echo "⚠️ Ошибка: Forge не найден!"
 
 
       - name: Debug workspace

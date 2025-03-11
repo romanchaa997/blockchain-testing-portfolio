@@ -2,19 +2,25 @@
 pragma solidity ^0.8.0;
 
 contract AdvancedStorage {
-    uint256 private storedData;
+    uint256[] private data;
 
-    event DataSet(address indexed setter, uint256 value);
-
-    // Set value function with limit
-    function set(uint256 _data) public {
-        require(_data <= 1000, "Value too high");
-        storedData = _data;
-        emit DataSet(msg.sender, _data);
+    function add(uint256 _value) public {
+        data.push(_value);
     }
 
-    // Function to get the value
-    function get() public view returns (uint256) {
-        return storedData;
+    function remove(uint256 index) public {
+        require(index < data.length, "Index out of bounds");
+        // Видаляємо значення, замінюючи його останнім елементом
+        data[index] = data[data.length - 1];
+        data.pop();
+    }
+
+    function get(uint256 index) public view returns (uint256) {
+        require(index < data.length, "Index out of bounds");
+        return data[index];
+    }
+
+    function getAll() public view returns (uint256[] memory) {
+        return data;
     }
 }
